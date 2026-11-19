@@ -9,7 +9,3 @@ def test_model_accuracy():
 def test_prediction():
     model, _ = train_model()
     assert int(model.predict([[5.1, 3.5, 1.4, 0.2]])[0]) == 0
-
-
-def test_intentional_failure():
-    assert False
