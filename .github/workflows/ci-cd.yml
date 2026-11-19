@@ -1,0 +1,31 @@
+name: MLOps CI-CD
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Validate Python code
+        run: python -m compileall -q src tests app.py
+      - name: Run automated tests
+        run: python -m pytest -v
+      - name: Run model application
+        run: python app.py
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Simulate deployment
+        run: echo 'Tests passed. Model deployment simulated successfully.'
